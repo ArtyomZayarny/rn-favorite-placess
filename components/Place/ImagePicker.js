@@ -6,6 +6,7 @@ import {
 import { useState } from 'react';
 import { StyleSheet, Button, View, Alert, Image, Text } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { OutLineButton } from '../ui/OutLineButton';
 
 export const ImagePicker = () => {
   const [cameraPermissionInfo, requestPermission] = useCameraPermissions();
@@ -49,7 +50,7 @@ export const ImagePicker = () => {
   return (
     <View>
       <View style={styles.imagePreview}>{imagePreview}</View>
-      <Button title="Take image" onPress={takeImage} />
+      <OutLineButton icon="camera">Take Image</OutLineButton>
     </View>
   );
 };
