@@ -74,6 +74,12 @@ export const LocationPicker = () => {
     locationPreview = (
       <MapView
         style={styles.mapPreview}
+        camera={{
+          center: {
+            latitude: pickedLocation.lat,
+            longitude: pickedLocation.lng,
+          },
+        }}
         initialRegion={{
           latitude: pickedLocation.lat,
           longitude: pickedLocation.lng,
