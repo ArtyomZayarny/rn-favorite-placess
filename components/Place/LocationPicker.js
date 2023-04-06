@@ -10,7 +10,7 @@ import {
   useRoute,
 } from '@react-navigation/native';
 
-export const LocationPicker = () => {
+export const LocationPicker = ({ onPickLocation }) => {
   const [pickedLocation, setPickedLocation] = useState();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
@@ -25,6 +25,10 @@ export const LocationPicker = () => {
       setPickedLocation(mapPickedLocation);
     }
   }, [isFocused, route]);
+
+  useEffect(() => {
+    onPickLocation(pickedLocation);
+  }, [pickedLocation, onPickLocation]);
 
   const [locationPermissionInfo, requestPermission] =
     Location.useForegroundPermissions();
@@ -46,7 +50,7 @@ export const LocationPicker = () => {
     return true;
   };
 
-  const getLocationHandler = async () => {
+  const getLocationHandler = async (goToTheMap = false) => {
     const hasPermission = await verifyPermission();
 
     if (!hasPermission) {
@@ -62,10 +66,7 @@ export const LocationPicker = () => {
   };
 
   const pickOnMapHandler = () => {
-    navigation.navigate('Map', {
-      latitude: pickedLocation.lat,
-      longitude: pickedLocation.lng,
-    });
+    navigation.navigate('Map');
   };
 
   let locationPreview = <Text>No location picked yet</Text>;

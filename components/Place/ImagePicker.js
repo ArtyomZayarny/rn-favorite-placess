@@ -8,7 +8,7 @@ import { StyleSheet, Button, View, Alert, Image, Text } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { OutLineButton } from '../ui/OutLineButton';
 
-export const ImagePicker = () => {
+export const ImagePicker = ({ onImageTaken }) => {
   const [cameraPermissionInfo, requestPermission] = useCameraPermissions();
   const [image, setImage] = useState();
 
@@ -41,6 +41,7 @@ export const ImagePicker = () => {
       quality: 0.5,
     });
     setImage(image.assets[0].uri);
+    onImageTaken(image.assets[0].uri);
   };
 
   let imagePreview = <Text>No image taken yet</Text>;
@@ -50,7 +51,9 @@ export const ImagePicker = () => {
   return (
     <View>
       <View style={styles.imagePreview}>{imagePreview}</View>
-      <OutLineButton icon="camera">Take Image</OutLineButton>
+      <OutLineButton icon="camera" onPress={takeImage}>
+        Take Image
+      </OutLineButton>
     </View>
   );
 };
