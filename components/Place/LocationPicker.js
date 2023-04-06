@@ -1,7 +1,7 @@
 import { Alert, Image, StyleSheet, View, Text } from 'react-native';
 import { Colors } from '../../constants/colors';
 import { OutLineButton } from '../ui/OutLineButton';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useState } from 'react';
 
@@ -54,8 +54,17 @@ export const LocationPicker = () => {
         initialRegion={{
           latitude: pickedLocation.lat,
           longitude: pickedLocation.lng,
+          latitudeDelta: 0.005,
+          longitudeDelta: 0.005,
         }}
-      />
+      >
+        <Marker
+          coordinate={{
+            latitude: pickedLocation.lat,
+            longitude: pickedLocation.lng,
+          }}
+        />
+      </MapView>
     );
   }
 
