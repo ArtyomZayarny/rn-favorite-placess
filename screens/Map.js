@@ -1,24 +1,44 @@
 import { Alert, StyleSheet, Text } from 'react-native';
-import React, { useCallback, useLayoutEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { useNavigation } from '@react-navigation/native';
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import { IconButton } from '../components/ui/IconButton';
 
 export const Map = () => {
   const [location, setLocation] = useState();
   const navigation = useNavigation();
-
-  const region = {
-    latitude: 37.78,
-    longitude: -122.43,
+  const route = useRoute();
+  const isFocused = useIsFocused();
+  const delta = {
     latitudeDelta: 0.005,
     longitudeDelta: 0.005,
   };
 
+  useEffect(() => {
+    if (isFocused && route.params && !location) {
+      const { latitude, longitude } = route.params;
+      setLocation((prevState) => ({
+        ...prevState,
+        latitude,
+        longitude,
+        ...delta,
+      }));
+    }
+  }, [isFocused, route]);
+
   const selectLocation = (event) => {
-    const lat = event.nativeEvent.coordinate.latitude;
-    const lng = event.nativeEvent.coordinate.longitude;
-    setLocation({ lat, lng });
+    const latitude = event.nativeEvent.coordinate.latitude;
+    const longitude = event.nativeEvent.coordinate.longitude;
+    setLocation((prevState) => ({ ...prevState, latitude, longitude }));
   };
 
   const savePickedLocation = useCallback(() => {
@@ -30,8 +50,8 @@ export const Map = () => {
       return;
     }
     navigation.navigate('AddPlace', {
-      pickedLat: location.lat,
-      pickedLng: location.lng,
+      pickedLat: location.latitude,
+      pickedLng: location.longitude,
     });
   }, [location, navigation]);
 
@@ -49,13 +69,17 @@ export const Map = () => {
   }, [savePickedLocation, navigation]);
 
   return (
-    <MapView onPress={selectLocation} initialRegion={region} style={styles.map}>
+    <MapView
+      onPress={selectLocation}
+      initialRegion={location}
+      style={styles.map}
+    >
       {location && (
         <Marker
           title="Picked Location"
           coordinate={{
-            latitude: location.lat,
-            longitude: location.lng,
+            latitude: location.latitude,
+            longitude: location.longitude,
           }}
         />
       )}

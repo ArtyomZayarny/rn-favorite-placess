@@ -62,7 +62,10 @@ export const LocationPicker = () => {
   };
 
   const pickOnMapHandler = () => {
-    navigation.navigate('Map');
+    navigation.navigate('Map', {
+      latitude: pickedLocation.lat,
+      longitude: pickedLocation.lng,
+    });
   };
 
   let locationPreview = <Text>No location picked yet</Text>;
