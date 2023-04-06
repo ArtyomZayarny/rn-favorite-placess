@@ -3,12 +3,28 @@ import { Colors } from '../../constants/colors';
 import { OutLineButton } from '../ui/OutLineButton';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 
 export const LocationPicker = () => {
   const [pickedLocation, setPickedLocation] = useState();
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
+  const route = useRoute();
+
+  useEffect(() => {
+    if (isFocused && route.params) {
+      const mapPickedLocation = route.params && {
+        lat: route.params.pickedLat,
+        lng: route.params.pickedLng,
+      };
+      setPickedLocation(mapPickedLocation);
+    }
+  }, [isFocused, route]);
 
   const [locationPermissionInfo, requestPermission] =
     Location.useForegroundPermissions();

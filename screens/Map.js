@@ -18,14 +18,10 @@ export const Map = () => {
   const selectLocation = (event) => {
     const lat = event.nativeEvent.coordinate.latitude;
     const lng = event.nativeEvent.coordinate.longitude;
-    console.log({ lat, lng });
-
     setLocation({ lat, lng });
   };
 
   const savePickedLocation = useCallback(() => {
-    console.log('location', location);
-    console.log('!location', !location);
     if (!location) {
       Alert.alert(
         'No location picked',
