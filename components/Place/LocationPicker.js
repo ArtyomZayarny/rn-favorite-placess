@@ -4,9 +4,11 @@ import { OutLineButton } from '../ui/OutLineButton';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 export const LocationPicker = () => {
   const [pickedLocation, setPickedLocation] = useState();
+  const navigation = useNavigation();
 
   const [locationPermissionInfo, requestPermission] =
     Location.useForegroundPermissions();
@@ -43,7 +45,9 @@ export const LocationPicker = () => {
     });
   };
 
-  const pickOnMapHandler = () => {};
+  const pickOnMapHandler = () => {
+    navigation.navigate('Map');
+  };
 
   let locationPreview = <Text>No location picked yet</Text>;
 
@@ -95,7 +99,7 @@ const styles = StyleSheet.create({
   },
   actions: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   mapImage: {
