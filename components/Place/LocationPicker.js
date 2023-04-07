@@ -12,22 +12,39 @@ import {
 
 export const LocationPicker = ({ onPickLocation }) => {
   const [pickedLocation, setPickedLocation] = useState();
+  const [address, setAddress] = useState();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const route = useRoute();
 
+  const getAddress = async () => {
+    const location = await Location.getCurrentPositionAsync();
+    const { latitude, longitude } = location.coords;
+
+    const response = await Location.reverseGeocodeAsync({
+      latitude,
+      longitude,
+    });
+    for (let item of response) {
+      let address = `${item.name}, ${item.street}, ${item.postalCode}, ${item.city}`;
+      setAddress(address);
+    }
+  };
+
   useEffect(() => {
+    getAddress();
     if (isFocused && route.params) {
       const mapPickedLocation = route.params && {
         lat: route.params.pickedLat,
         lng: route.params.pickedLng,
       };
       setPickedLocation(mapPickedLocation);
+      getAddress();
     }
   }, [isFocused, route]);
 
   useEffect(() => {
-    onPickLocation(pickedLocation);
+    onPickLocation({ location: { ...pickedLocation }, address });
   }, [pickedLocation, onPickLocation]);
 
   const [locationPermissionInfo, requestPermission] =
@@ -50,7 +67,7 @@ export const LocationPicker = ({ onPickLocation }) => {
     return true;
   };
 
-  const getLocationHandler = async (goToTheMap = false) => {
+  const getLocationHandler = async () => {
     const hasPermission = await verifyPermission();
 
     if (!hasPermission) {
@@ -63,6 +80,10 @@ export const LocationPicker = ({ onPickLocation }) => {
       lat: location.coords.latitude,
       lng: location.coords.longitude,
     });
+    console.log(
+      'address1:',
+      Location.reverseGeocodeAsync({ ...location.coords })
+    );
   };
 
   const pickOnMapHandler = () => {
