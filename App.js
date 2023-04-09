@@ -1,4 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
+import { View, Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import { IconButton } from './components/ui/IconButton';
@@ -6,27 +7,46 @@ import { Colors } from './constants/colors';
 import { AddPlace } from './screens/AddPlace';
 import { AllPlaces } from './screens/AllPlaces';
 import { Map } from './screens/Map';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
+import Entypo from '@expo/vector-icons/Entypo';
+import * as Font from 'expo-font';
+
 import { init } from './util/database';
-import AppLoading from 'expo-app-loading';
+//import AppLoading from 'expo-app-loading';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [dbInitialized, setDbInitialized] = useState(false);
+  const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
-    init()
-      .then(() => {
-        setDbInitialized(true);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    async function prepare() {
+      try {
+        // Pre-load fonts, make any API calls you need to do here
+        await Font.loadAsync(Entypo.font);
+        // Artificially delay for two seconds to simulate a slow loading
+        // experience. Please remove this if you copy and paste the code!
+        init()
+          .then(() => {
+            setDbInitialized(true);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
+      }
+    }
+
+    prepare();
   }, []);
 
-  if (!dbInitialized) {
-    return <AppLoading />;
+  if (!appIsReady) {
+    return null;
   }
 
   return (
