@@ -80,10 +80,6 @@ export const LocationPicker = ({ onPickLocation }) => {
       lat: location.coords.latitude,
       lng: location.coords.longitude,
     });
-    console.log(
-      'address1:',
-      Location.reverseGeocodeAsync({ ...location.coords })
-    );
   };
 
   const pickOnMapHandler = () => {
