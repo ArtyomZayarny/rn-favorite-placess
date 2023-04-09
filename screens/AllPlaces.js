@@ -16,7 +16,7 @@ export const AllPlaces = ({ route }) => {
     if (isFocused) {
       loadPlaces();
     }
-  }, []);
+  }, [isFocused]);
 
   return <PlacesList places={loadedPLaces} />;
 };

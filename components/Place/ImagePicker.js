@@ -19,6 +19,10 @@ export const ImagePicker = ({ onImageTaken }) => {
       return permissionResponse.granted;
     }
     if (cameraPermissionInfo.status == PermissionStatus.DENIED) {
+      const permissionResponse = await requestPermission();
+      if (permissionResponse) {
+        return permissionResponse.granted;
+      }
       Alert.alert(
         'Insufficient Permissions!',
         'You need to grant camera permissions to use this app'

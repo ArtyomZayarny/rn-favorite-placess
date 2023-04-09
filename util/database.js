@@ -49,6 +49,7 @@ export const insertPlace = (place) => {
       );
     });
   });
+  return promise;
 };
 
 export const fetchPlaces = () => {
