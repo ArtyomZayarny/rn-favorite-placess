@@ -23,11 +23,12 @@ export default function App() {
       .catch((error) => {
         console.log(error);
       });
-
-    if (!dbInitialized) {
-      return <AppLoading />;
-    }
   }, []);
+
+  if (!dbInitialized) {
+    return <AppLoading />;
+  }
+
   return (
     <>
       <StatusBar />

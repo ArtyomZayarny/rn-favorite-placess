@@ -76,10 +76,11 @@ export const LocationPicker = ({ onPickLocation }) => {
 
     const location = await Location.getCurrentPositionAsync();
 
-    setPickedLocation({
+    await setPickedLocation({
       lat: location.coords.latitude,
       lng: location.coords.longitude,
     });
+    await getAddress();
   };
 
   const pickOnMapHandler = () => {

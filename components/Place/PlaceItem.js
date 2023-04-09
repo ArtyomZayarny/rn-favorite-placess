@@ -8,7 +8,7 @@ export const PlaceItem = ({ place, onSelect }) => {
       onPress={onSelect}
       style={({ pressed }) => [styles.item, pressed && styles.pressed]}
     >
-      <Image source={{ uri: place.imageUrl }} style={styles.image} />
+      <Image source={{ uri: place.imageUri }} style={styles.image} />
       <View style={styles.info}>
         <Text style={styles.title}>{place.title}</Text>
         <Text style={styles.address}>{place.address}</Text>

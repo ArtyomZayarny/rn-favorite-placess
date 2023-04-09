@@ -16,6 +16,7 @@ export const PlacesList = ({ places }) => {
 
   return (
     <FlatList
+      style={{ padding: 8 }}
       keyExtractor={(item) => item.id}
       data={places}
       renderItem={(data) => <PlaceItem place={data.item} />}

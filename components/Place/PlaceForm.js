@@ -22,11 +22,12 @@ export const PlaceForm = ({ onCreatePlace }) => {
   }, []);
 
   const savePlaceHandler = () => {
+    const { address } = pickedLocation;
     const placeData = new Place(
       title,
       selectedImage,
-      pickedLocation.address,
-      pickedLocation
+      address,
+      pickedLocation.location
     );
     onCreatePlace(placeData);
   };
