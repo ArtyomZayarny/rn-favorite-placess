@@ -13,6 +13,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import * as Font from 'expo-font';
 
 import { init } from './util/database';
+import PlaceDetails from './screens/PlaceDetails';
 //import AppLoading from 'expo-app-loading';
 
 const Stack = createNativeStackNavigator();
@@ -87,6 +88,13 @@ export default function App() {
             }}
           />
           <Stack.Screen name="Map" component={Map} />
+          <Stack.Screen
+            name="PlaceDetails"
+            component={PlaceDetails}
+            options={{
+              title: 'Loading Place...',
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </>

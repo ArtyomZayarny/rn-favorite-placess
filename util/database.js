@@ -40,7 +40,6 @@ export const insertPlace = (place) => {
           place.location.lng,
         ],
         (_, result) => {
-          console.log('result', result);
           resolve(result);
         },
         (_, error) => {
@@ -75,6 +74,24 @@ export const fetchPlaces = () => {
         },
         (_, error) => {
           reject(error);
+        }
+      );
+    });
+  });
+  return promise;
+};
+
+export const fetchPLaceDetails = (id) => {
+  const promise = new Promise((resolve, reject) => {
+    database.transaction((tx) => {
+      tx.executeSql(
+        'SELECT * FROM places WHERE id = ?',
+        [id],
+        (_, result) => {
+          resolve(result.rows._array[0]);
+        },
+        (_, error) => {
+          reject();
         }
       );
     });
