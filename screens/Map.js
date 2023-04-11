@@ -14,9 +14,10 @@ import {
 import { IconButton } from '../components/ui/IconButton';
 
 export const Map = () => {
+  const route = useRoute();
   const [location, setLocation] = useState();
   const navigation = useNavigation();
-  const route = useRoute();
+
   const isFocused = useIsFocused();
   const delta = {
     latitudeDelta: 0.005,
@@ -56,6 +57,9 @@ export const Map = () => {
   }, [location, navigation]);
 
   useLayoutEffect(() => {
+    if (route?.params.initialLocation) {
+      return;
+    }
     navigation.setOptions({
       headerRight: ({ tintColor }) => (
         <IconButton
